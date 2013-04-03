@@ -9,7 +9,7 @@
 	<meta name="description" content="Angular way or the Highway" />
 	<meta name="author" content="Tom Najdek" />
 
-	<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono|Ubuntu' rel='stylesheet' type='text/css'>
 	
 	<link href="angularway.css" rel="stylesheet" />
 	<link rel="shortcut icon" href="favicon.png" />
@@ -43,7 +43,7 @@
 	</div>
 
 	<div id="angular" class="slide step" data-x="1500" data-y="-1500">
-		<h1>Let's talk about the <strong>Angular Way</strong></h1>
+		<h1>Let's talk about <strong>Angular</strong></h1>
 		<img class="angular" src="img/angular.png" />
 	</div>
 
@@ -90,6 +90,7 @@
 	</div>	
 
 	<div id="orientation" class="slide step" data-x="5500" data-y="-1500"  >
+		<h1>But... it's not all that bad</h1>
 		<h1>Let's change perspective</h1>
 	</div>
 
@@ -97,6 +98,76 @@
 		<h1>Let's talk about the <strong>Angular Way</strong></h1>
 		<img class="angular" src="img/angular.png" />
 	</div>
+
+	<div id="dependency" class="step slide" data-x="5500" data-y="500" data-rotate-z="90">
+		<h1>Dependency Injection</h1>
+		<pre class="prettyprint bad">
+var MyController($scope) {
+	var backend = new httpBackend();
+	$scope.articles = backend.article.query({author="Tom"});
+}
+		</pre>
+		<img class="motorway" src="img/motorway.gif" />
+
+		<pre class="prettyprint bad">
+var MyController($scope) {
+	var backend = window.project['httpBackend'];
+	$scope.articles = backend.article.query({author="Tom"});
+}
+		</pre>
+		<img class="motorway" src="img/motorway.gif" />
+
+
+		<pre class="prettyprint good">
+var MyController($scope, $httpBackend) {
+	$scope.articles = $httpBackend.article.query({author="Tom"});
+}
+		</pre>
+		<img class="angular" src="img/angular.png" />
+	</div>
+
+	<div id="testability" class="step slide" data-x="5500" data-y="1500" data-rotate-z="90">
+		<h1>Testability</h1>
+		<pre class="prettyprint">
+var httpBackend, myController, mockedData, scope;
+mockedData = [ ... ]; // fixture containing test data
+mocks.inject(function(_$httpBackend_, $rootScope, $controller) {
+	httpBackend = _$httpBackend_; // this is MOCKED version of $httpBackend;
+	// which means it can do trickes, e.g.
+	httpBackend.whenGET('/api/articles?author=tom').respond(mockedData);
+	// new, empty scope for controller we want to test
+	scope = $rootScope.$new();
+	// instantiate controller using Angular Way
+	myController = $controller('MyController', {
+               "scope": scope
+	});
+
+	$httpBackend.flush();
+	expect(scope.articles.length).toBeGreaterThan(0);
+}</pre>
+<img class="angular" src="img/angular.png" />
+		
+	</div>
+	<div id="e2e" class="step slide" data-x="5500" data-y="2500" data-rotate-z="90">
+		<h1>e2e tests</h1>
+<pre class="prettyprint">it('should allow creating articles', function() {
+	browser().navigateTo('/articles');
+	expect(element('h1:contains("Articles")+table>tr').count()).toBe(0);
+ 	element('button:contains("New Article")').click();
+ 	expect(element('body').attr("class")).toMatch('modal-open');
+ 	expect(element('h3:contains("New Entry")').count()).toBe(1);
+ 	input('article.title').enter('Awesome Article!');
+ 	select('article.author').option('Tom');
+ 	select('article.category').option('News');
+ 	element('button:contains("Save Article")').click();
+ 	sleep(1); // Allow 1 second for real backend communication
+ 	expect(
+ 		        element('h1:contains("Articles")+table>tr').count())
+ 	.toBeGreaterThan(0);
+ });
+</pre>
+	</div>
+
 	<!-- <div class="step slide" data-x="1000" data-y="-1500">
 		Credits:
 		<ul>
@@ -107,6 +178,7 @@
 </div>
 
 <script src="impress.js"></script>
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 <script>impress().init();</script>
 
 </body>

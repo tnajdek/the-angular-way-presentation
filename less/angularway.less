@@ -25,6 +25,11 @@ a {
 
 }
 
+pre {
+	font-size: 20px;
+	font-family: "Ubuntu Mono";
+}
+
 a:hover,
 a:focus {
 	background: rgba(255,255,255,1);
@@ -224,8 +229,12 @@ a:focus {
 #orientation {
 	h1 {
 	font-size: 2em;
-	margin-top: 250px;
+	margin-top: 200px;
 	text-align: center;
+	}
+
+	h1+ h1 {
+		margin-top: 50px;
 	}
 
 }
@@ -240,4 +249,66 @@ a:focus {
 	strong {
 		text-decoration: underline;
 	}
+}
+
+
+#dependency {
+	.bad {
+		// opacity: 1
+	}
+
+	&.present .bad {
+		opacity: 0.6;
+		.transition(0.5s ease-out);
+		.transition-delay(3s);
+	}
+
+	.motorway, .angular {
+		width:100px;
+		margin-top: -120px;
+		margin-left: 670px;
+		position: absolute;
+		opacity: 0;
+	}
+
+
+	&.present .motorway, &.present .angular {
+		opacity: 1;
+		.transition(0.5s ease-out);
+		.transition-delay(3s);	
+	}
+
+}
+
+#testability {
+	.angular {
+		width:100px;
+		margin-top: -120px;
+		margin-left: 670px;
+		position: absolute;
+		opacity: 0;
+	}
+
+	&.present .angular {
+		opacity: 1;
+		.transition(0.5s ease-out);
+		.transition-delay(10s);
+	}	
+
+}
+
+#testability {
+	.angular {
+		width:100px;
+		margin-top: -120px;
+		margin-left: 670px;
+		position: absolute;
+		opacity: 0;
+	}
+
+	&.present .angular {
+		opacity: 1;
+		.transition(0.5s ease-out);
+		.transition-delay(10s);
+	}	
 }
