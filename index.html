@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=1024" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<title>Angular way or the Highway | by Tom Najdek @tnajdek</title>
+	
+	<meta name="description" content="Angular way or the Highway" />
+	<meta name="author" content="Tom Najdek" />
+
+	<link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono|Ubuntu' rel='stylesheet' type='text/css'>
+	
+	<link href="angularway.css" rel="stylesheet" />
+	<link rel="shortcut icon" href="favicon.png" />
+	<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+</head>
+<body>
+<div class="fallback-message">
+	<p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+	<p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+</div>
+
+<div id="impress">
+	<div id="title" class="step slide" data-x="-1000" data-y="-1500">
+		<img class="angular" src="img/angular.png" />
+		<span>OR</span>
+		<img class="motorway" src="img/motorway.gif" />
+	</div>
+	<div id="approach" class="step slide" data-x="0" data-y="-1500">
+		<h1>Goal: Learn new framework</h1>
+		<ol>
+			<li>Follow the tutorial</li>
+			<li>Read the documentation</li>
+			<li>Start coding</li>
+			<li>When in doubt use your <q>intuition</q></li>
+		</ol>
+	</div>
+
+	<div id="ooops" class="step" data-x="0" data-y="-750">
+		<img src="img/ooops.jpg" />
+		<img class="motorway" src="img/motorway.gif" />
+	</div>
+
+	<div id="angular" class="slide step" data-x="1500" data-y="-1500">
+		<h1>Let's talk about <strong>Angular</strong></h1>
+		<img class="angular" src="img/angular.png" />
+	</div>
+
+	<div id="components" class="slide step" data-x="2500" data-y="-1500">
+		<h1>Concepts &amp; components</h1>
+		<p>To learn AngularJS you need to understand the following concepts (In no particular order):</p>
+		<div class="scroll">
+			<ul>
+				<li>MVC</li>
+				<li>Data Binding</li>
+				<li>Dependancy Injection</li>
+				<li>Controllers</li>
+				<li>Directives</li>
+				<li>Services</li>
+				<li>Filters</li>
+				<li>Transclusion</li>
+				<li>Widgets</li>
+				<li>Templates</li>
+				<li>Providers</li>
+				<li>Injector</li>
+				<li>Two-way Data Binding</li>
+				<li>REST</li>
+				<li>Scope isolation</li>
+				<li>Angular Expressions vs. JS</li>
+				<li>E2E &amp; Unit testing</li>
+				<li>Testacular</li>
+				<li>Karma Test Runner</li>
+				<li>The Angular Way</li>
+				<li><img src="img/engineer.jpg" /></li>
+			</ul>
+		</div>
+	</div>
+
+	<div id="transclusion" class="slide step" data-x="3500" data-y="-1500">
+		<h1>Documentation</h1>
+		<q>The advantage of transclusion is that the linking function receives a transclusion function which is pre-bound to the correct scope. In a typical setup the widget creates an isolate scope, but the transclusion is not a child, but a sibling of the isolate scope. This makes it possible for the widget to have private state, and the transclusion to be bound to the parent (pre-isolate) scope.</q>
+		<h1>Huh?</h1>
+	</div>
+
+	<div id="documentation" class="slide step" data-x="4500" data-y="-1500">
+		<h1>And documentation...</h1>
+		<img src="img/findprovider.png" />
+		<img class="arrow" src="img/arrow.gif" />
+	</div>	
+
+	<div id="orientation" class="slide step" data-x="5500" data-y="-1500"  >
+		<h1>But... it's not all that bad</h1>
+		<h1>Let's change perspective</h1>
+	</div>
+
+	<div id="angular2" class="slide step" data-x="5500" data-y="-500" data-rotate-z="90">
+		<h1>Let's talk about the <strong>Angular Way</strong></h1>
+		<img class="angular" src="img/angular.png" />
+	</div>
+
+	<div id="dependency" class="step slide" data-x="5500" data-y="500" data-rotate-z="90">
+		<h1>Dependency Injection</h1>
+		<pre class="prettyprint bad">
+function MyController($scope) {
+	var backend = new httpBackend();
+	$scope.articles = backend.article.query({author="Tom"});
+}
+		</pre>
+		<img class="motorway" src="img/motorway.gif" />
+
+		<pre class="prettyprint bad">
+function MyController($scope) {
+	var backend = window.project['httpBackend'];
+	$scope.articles = backend.article.query({author="Tom"});
+}
+		</pre>
+		<img class="motorway" src="img/motorway.gif" />
+
+
+		<pre class="prettyprint good">
+function MyController($scope, $httpBackend) {
+	$scope.articles = $httpBackend.article.query({author="Tom"});
+}
+		</pre>
+		<img class="angular" src="img/angular.png" />
+	</div>
+
+	<div id="testability" class="step slide" data-x="5500" data-y="1500" data-rotate-z="90">
+		<h1>Testability</h1>
+		<pre class="prettyprint">
+var httpBackend, myController, mockedData, scope;
+mockedData = [ ... ]; // fixture containing test data
+mocks.inject(function(_$httpBackend_, $rootScope, $controller) {
+	httpBackend = _$httpBackend_; // this is MOCKED version of $httpBackend;
+	// which means it can do trickes, e.g.
+	httpBackend.whenGET('/api/articles?author=tom').respond(mockedData);
+	// new, empty scope for controller we want to test
+	scope = $rootScope.$new();
+	// instantiate controller using Angular Way
+	myController = $controller('MyController', {
+               "scope": scope
+	});
+	$httpBackend.flush();
+	expect(scope.articles.length).toBeGreaterThan(0);
+}
+		</pre>
+		<img class="angular" src="img/angular.png" />
+		
+	</div>
+	<div id="endtoend" class="step slide" data-x="5500" data-y="2500" data-rotate-z="90">
+		<h1>e2e tests</h1>
+		<pre class="prettyprint">it('should allow creating articles', function() {
+	browser().navigateTo('/articles');
+	expect(element('h1:contains("Articles")+table>tr').count()).toBe(0);
+ 	element('button:contains("New Article")').click();
+ 	expect(element('body').attr("class")).toMatch('modal-open');
+ 	expect(element('h3:contains("New Entry")').count()).toBe(1);
+ 	input('article.title').enter('Awesome Article!');
+ 	select('article.author').option('Tom');
+ 	select('article.category').option('News');
+ 	element('button:contains("Save Article")').click();
+ 	sleep(1); // Allow 1 second for real backend communication
+ 	expect(
+ 		        element('h1:contains("Articles")+table>tr').count())
+ 	.toBeGreaterThan(0);
+ });
+		</pre>
+		<img class="angular" src="img/angular.png" />
+	</div>
+
+	<div id="events" class="step slide" data-x="5500" data-y="3500" data-rotate-z="90">
+		<h1>Events</h1>
+		<pre class="prettyprint bad">
+function MyController($scope) {
+	$('.addArticle').click(function(e) {
+		//do something
+	});
+}</pre>
+		<img class="motorway" src="img/motorway.gif" />
+		<pre class="prettyprint">
+function MyController($scope) {
+	$scope.doSomething = function(e) {
+				//do something
+	}
+}</pre>
+		<img class="angular" src="img/angular.png" />
+		<pre class="prettyprint">
+&lt;div ng-controller="MyController"&gt;
+	&lt;button ng-click="doSomething($event)"&gt;Click me!&lt;/button&gt;
+&lt;/div&gt;
+		</pre>
+	</div>
+
+	<div id="binding" class="step slide" data-x="5500" data-y="4500" data-rotate-z="90">
+		<h1>Two-way binding</h1>
+		<pre class="prettyprint bad">
+function MyController($scope, $httpBackend) {
+	var compiled, greeting;
+	compiled = _.template("hello: <%= name %>");
+	greeting = compiled({name : 'moe'});
+	$('.greeting').append(greeting);
+}</pre>
+		<img class="motorway" src="img/motorway.gif" />
+		<pre class="prettyprint">
+function MyController($scope, $httpBackend) {
+	$scope.greeting = $httpBackend.article.query({author="Tom"});
+}</pre>
+		<pre class="prettyprint">
+&lt;div ng-controller="MyController"&gt;
+	&lt;div class="greeting"&gt;hello: {{greeting}}!&lt;/div&gt;
+&lt;/div&gt;</pre>
+		<img class="angular" src="img/angular.png" />
+	</div>
+
+	<div id="directives" class="step slide" data-x="5500" data-y="5500" data-rotate-z="90">
+		<h1>Directives</h1>
+		<iframe width="100%" height="500" src="http://jsfiddle.net/PStTT/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+	</div>
+
+	<div id="more" class="step slide" data-x="5500" data-y="6500" data-rotate-z="90">
+		<h1>And much more...</h1>
+		<h1>So is it worth the hassle?</h1>
+	</div>
+
+	<div id="yes-or-no" class="step slide" data-x="4500" data-y="6500" data-rotate-z="180">
+		<h1>Yes, if...</h1>
+		<ul>
+			<li>You're ok with the steep learing curve</li>
+			<li>Want to have trully testable code/full coverage</li>
+			<li>You're happy to trade a lot of what you already know for the "Angular Way"</li>
+		</ul>
+		<h1>No, if...</h1>
+		<ul>
+			<li>Just need a prototype/proof of concept put together quickly</li>
+			<li>Can't adapt the <q>Angular Way</q> for any reason</li>
+			<li>Want to have precise control over how things are done</li>
+		</ul>
+	</div>
+	<div id="its-a-tool" class="step slide" data-x="3500" data-y="6500" data-rotate-z="180">
+		<h1>In the end it's a tool</h1>
+		<h1>Use the one right for the job</h1>
+	</div>
+	<div id="overview" class="step" data-x="3000" data-y="2500" data-scale="10">
+    </div>
+
+<h1 class="questions">Questions?</h1>
+
+</div>
+<footer>
+2013 Tom Najdek | Follow me:
+<a href="https://github.com/tnajdek"><span class="icon icon-github"></span></a>
+<a href="http://doppnet.com"><span class="icon icon-book"></span>
+<a href="https://plus.google.com/112496233047981712515/posts"><span class="icon icon-google-plus"></span>
+<a href="https://twitter.com/tnajdek"><span class="icon icon-twitter"></span>
+
+</footer>
+
+
+<script src="impress.js"></script>
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+<script>impress().init();</script>
+
+</body>
+</html>
