@@ -113,6 +113,13 @@ a:focus {
 	}
 }
 
+
+&.present .bad {
+	opacity: 0.6;
+	.transition(0.5s ease-out);
+	.transition-delay(3s);
+}
+
 #title {
 	.angular {
 		width:300px;
@@ -256,11 +263,6 @@ a:focus {
 		// opacity: 1
 	}
 
-	&.present .bad {
-		opacity: 0.6;
-		.transition(0.5s ease-out);
-		.transition-delay(3s);
-	}
 
 	.motorway, .angular {
 		width:100px;

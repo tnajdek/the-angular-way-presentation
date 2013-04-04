@@ -171,7 +171,7 @@ mocks.inject(function(_$httpBackend_, $rootScope, $controller) {
 
 	<div id="events" class="step slide" data-x="5500" data-y="3500" data-rotate-z="90">
 		<h1>Events</h1>
-		<pre class="prettyprint">
+		<pre class="prettyprint bad">
 function MyController($scope) {
 	$('.addArticle').click(function(e) {
 		//do something
@@ -194,7 +194,7 @@ function MyController($scope) {
 
 	<div id="binding" class="step slide" data-x="5500" data-y="4500" data-rotate-z="90">
 		<h1>Two-way binding</h1>
-		<pre class="prettyprint">
+		<pre class="prettyprint bad">
 function MyController($scope, $httpBackend) {
 	var compiled, greeting;
 	compiled = _.template("hello: <%= name %>");
