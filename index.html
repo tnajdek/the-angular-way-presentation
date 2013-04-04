@@ -102,7 +102,7 @@
 	<div id="dependency" class="step slide" data-x="5500" data-y="500" data-rotate-z="90">
 		<h1>Dependency Injection</h1>
 		<pre class="prettyprint bad">
-var MyController($scope) {
+function MyController($scope) {
 	var backend = new httpBackend();
 	$scope.articles = backend.article.query({author="Tom"});
 }
@@ -110,7 +110,7 @@ var MyController($scope) {
 		<img class="motorway" src="img/motorway.gif" />
 
 		<pre class="prettyprint bad">
-var MyController($scope) {
+function MyController($scope) {
 	var backend = window.project['httpBackend'];
 	$scope.articles = backend.article.query({author="Tom"});
 }
@@ -119,7 +119,7 @@ var MyController($scope) {
 
 
 		<pre class="prettyprint good">
-var MyController($scope, $httpBackend) {
+function MyController($scope, $httpBackend) {
 	$scope.articles = $httpBackend.article.query({author="Tom"});
 }
 		</pre>
@@ -141,16 +141,16 @@ mocks.inject(function(_$httpBackend_, $rootScope, $controller) {
 	myController = $controller('MyController', {
                "scope": scope
 	});
-
 	$httpBackend.flush();
 	expect(scope.articles.length).toBeGreaterThan(0);
-}</pre>
-<img class="angular" src="img/angular.png" />
+}
+		</pre>
+		<img class="angular" src="img/angular.png" />
 		
 	</div>
-	<div id="e2e" class="step slide" data-x="5500" data-y="2500" data-rotate-z="90">
+	<div id="endtoend" class="step slide" data-x="5500" data-y="2500" data-rotate-z="90">
 		<h1>e2e tests</h1>
-<pre class="prettyprint">it('should allow creating articles', function() {
+		<pre class="prettyprint">it('should allow creating articles', function() {
 	browser().navigateTo('/articles');
 	expect(element('h1:contains("Articles")+table>tr').count()).toBe(0);
  	element('button:contains("New Article")').click();
@@ -165,17 +165,97 @@ mocks.inject(function(_$httpBackend_, $rootScope, $controller) {
  		        element('h1:contains("Articles")+table>tr').count())
  	.toBeGreaterThan(0);
  });
-</pre>
+		</pre>
+		<img class="angular" src="img/angular.png" />
 	</div>
 
-	<!-- <div class="step slide" data-x="1000" data-y="-1500">
-		Credits:
+	<div id="events" class="step slide" data-x="5500" data-y="3500" data-rotate-z="90">
+		<h1>Events</h1>
+		<pre class="prettyprint">
+function MyController($scope) {
+	$('.addArticle').click(function(e) {
+		//do something
+	});
+}</pre>
+		<img class="motorway" src="img/motorway.gif" />
+		<pre class="prettyprint">
+function MyController($scope) {
+	$scope.doSomething = function(e) {
+				//do something
+	}
+}</pre>
+		<img class="angular" src="img/angular.png" />
+		<pre class="prettyprint">
+&lt;div ng-controller="MyController"&gt;
+	&lt;button ng-click="doSomething($event)"&gt;Click me!&lt;/button&gt;
+&lt;/div&gt;
+		</pre>
+	</div>
+
+	<div id="binding" class="step slide" data-x="5500" data-y="4500" data-rotate-z="90">
+		<h1>Two-way binding</h1>
+		<pre class="prettyprint">
+function MyController($scope, $httpBackend) {
+	var compiled, greeting;
+	compiled = _.template("hello: <%= name %>");
+	greeting = compiled({name : 'moe'});
+	$('.greeting').append(greeting);
+}</pre>
+		<img class="motorway" src="img/motorway.gif" />
+		<pre class="prettyprint">
+function MyController($scope, $httpBackend) {
+	$scope.greeting = $httpBackend.article.query({author="Tom"});
+}</pre>
+		<pre class="prettyprint">
+&lt;div ng-controller="MyController"&gt;
+	&lt;div class="greeting"&gt;hello: {{greeting}}!&lt;/div&gt;
+&lt;/div&gt;</pre>
+		<img class="angular" src="img/angular.png" />
+	</div>
+
+	<div id="directives" class="step slide" data-x="5500" data-y="5500" data-rotate-z="90">
+		<h1>Directives</h1>
+		<iframe width="100%" height="500" src="http://jsfiddle.net/PStTT/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+	</div>
+
+	<div id="more" class="step slide" data-x="5500" data-y="6500" data-rotate-z="90">
+		<h1>And much more...</h1>
+		<h1>So is it worth the hassle?</h1>
+	</div>
+
+	<div id="yes-or-no" class="step slide" data-x="4500" data-y="6500" data-rotate-z="180">
+		<h1>Yes, if...</h1>
 		<ul>
-			<li> Angular JS logo</li>
-			<li> XKCD</li>
+			<li>You're ok with the steep learing curve</li>
+			<li>Want to have trully testable code/full coverage</li>
+			<li>You're happy to trade a lot of what you already know for the "Angular Way"</li>
 		</ul>
-	</div> -->
+		<h1>No, if...</h1>
+		<ul>
+			<li>Just need a prototype/proof of concept put together quickly</li>
+			<li>Can't adapt the <q>Angular Way</q> for any reason</li>
+			<li>Want to have precise control over how things are done</li>
+		</ul>
+	</div>
+	<div id="its-a-tool" class="step slide" data-x="3500" data-y="6500" data-rotate-z="180">
+		<h1>In the end it's a tool</h1>
+		<h1>Use the one right for the job</h1>
+	</div>
+	<div id="overview" class="step" data-x="3000" data-y="2500" data-scale="10">
+    </div>
+
+<h1 class="questions">Questions?</h1>
+
 </div>
+<footer>
+2013 Tom Najdek | Follow me:
+<a href="https://github.com/tnajdek"><span class="icon icon-github"></span></a>
+<a href="http://doppnet.com"><span class="icon icon-book"></span>
+<a href="https://plus.google.com/112496233047981712515/posts"><span class="icon icon-google-plus"></span>
+<a href="https://twitter.com/tnajdek"><span class="icon icon-twitter"></span>
+
+</footer>
+
 
 <script src="impress.js"></script>
 <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
