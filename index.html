@@ -1,10 +1,18 @@
 <!doctype html>
+<!--
+	Ahhh the source code...
+	I've put this presentation together really quickly
+	the night before the event. The code is quite ugly,
+	lots of things done in a very inefficient way.
+
+	use at your own risk!
+-->
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=1024" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<title>Angular way or the Highway | by Tom Najdek @tnajdek</title>
+	<title>Angular way or the highway | by Tom Najdek @tnajdek</title>
 	
 	<meta name="description" content="Angular way or the Highway" />
 	<meta name="author" content="Tom Najdek" />
@@ -176,7 +184,7 @@ mocks.inject(function(_$httpBackend_, $rootScope, $controller) {
 		<h1>Events</h1>
 		<pre class="prettyprint">
 &lt;div ng-controller="MyController"&gt;
-	&lt;p&gt;My name is {{name}}&lt;/p&gt;
+	&lt;p&gt;My name is { {name} }&lt;/p&gt;
 	&lt;button class="dark-side-button">&gt;Come to the Dark Side!&lt;/button&gt;
 &lt;/div&gt;</pre>
 		<pre class="prettyprint bad">
@@ -206,7 +214,7 @@ function MyController($scope) {
 	<div id="events-angular-way" class="step slide playground" data-x="4500" data-y="3500" data-rotate-z="90">
 		<pre class="prettyprint">
 &lt;div ng-controller="MyController"&gt;
-	&lt;p&gt;My name is {{name}}&lt;/p&gt;
+	&lt;p&gt;My name is { {name} }&lt;/p&gt;
 	&lt;button ng-click="darkSide($event)"&gt;Come to the Dark Side!&lt;/button&gt;
 &lt;/div&gt;</pre>
 	<pre class="prettyprint">
@@ -280,7 +288,7 @@ function MyController($scope, $httpBackend) {
 		<h1>Two-way binding</h1>
 		<pre class="prettyprint">
 &lt;div ng-controller="MyController"&gt;
-	&lt;p &gt;{{name}}&lt;/p&gt;
+	&lt;p &gt;{ {name} }&lt;/p&gt;
 	&lt;input type="text" ng-model="name" /&gt;
 &lt;/div&gt;</pre>
 	<pre class="prettyprint">
@@ -350,7 +358,7 @@ angular.module('zippyModule', [])
 		<pre class="prettyprint">
 &lt;div&gt;
 	&lt;div ng-controller="Ctrl3"&gt;
-	&lt;div class="zippy" zippy-title="Details: { { title } }..."&gt;{{text}}&lt;/div&gt;
+	&lt;div class="zippy" zippy-title="Details: { { title } }..."&gt;{ {text} }&lt;/div&gt;
 	&lt;/div&gt;
 &lt;/div&gt;</pre>
 		<img class="angular" src="img/angular.png" />
