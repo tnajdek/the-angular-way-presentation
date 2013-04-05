@@ -1,16 +1,27 @@
 <!doctype html>
+<!--
+	Ahhh the source code...
+	I've put this presentation together really quickly
+	the night before the event. The code is quite ugly,
+	lots of things done in a very inefficient way.
+
+	use at your own risk!
+-->
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=1024" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<title>Angular way or the Highway | by Tom Najdek @tnajdek</title>
+	<title>Angular way or the highway | by Tom Najdek @tnajdek</title>
 	
 	<meta name="description" content="Angular way or the Highway" />
 	<meta name="author" content="Tom Najdek" />
 
 	<link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono|Ubuntu' rel='stylesheet' type='text/css'>
 	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
 	<link href="angularway.css" rel="stylesheet" />
 	<link rel="shortcut icon" href="favicon.png" />
 	<link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -32,7 +43,7 @@
 		<ol>
 			<li>Follow the tutorial</li>
 			<li>Read the documentation</li>
-			<li>Start coding</li>
+			<li>Start coding!</li>
 			<li>When in doubt use your <q>intuition</q></li>
 		</ol>
 	</div>
@@ -73,7 +84,7 @@
 				<li>Karma Test Runner</li>
 				<li>The Angular Way</li>
 				<li><img src="img/engineer.jpg" /></li>
-			</ul>
+			</ul> 
 		</div>
 	</div>
 
@@ -171,52 +182,197 @@ mocks.inject(function(_$httpBackend_, $rootScope, $controller) {
 
 	<div id="events" class="step slide" data-x="5500" data-y="3500" data-rotate-z="90">
 		<h1>Events</h1>
+		<pre class="prettyprint">
+&lt;div ng-controller="MyController"&gt;
+	&lt;p&gt;My name is { {name} }&lt;/p&gt;
+	&lt;button class="dark-side-button">&gt;Come to the Dark Side!&lt;/button&gt;
+&lt;/div&gt;</pre>
 		<pre class="prettyprint bad">
 function MyController($scope) {
-	$('.addArticle').click(function(e) {
-		//do something
+	$scope.name = "Anakin Skywalker";
+	$('.dark-side-button').click(function(e) {
+		$scope.name = "Darth Vader";
+		alert("don't use alerts for debugging");
 	});
 }</pre>
 		<img class="motorway" src="img/motorway.gif" />
+		<div ng-controller="EventsHighwayPlayground">
+			<p>My name is {{name}}</p>
+			<button class="dark-side-button">Come to the Dark Side!</button>
+		</div>
+		<script>
+			function EventsHighwayPlayground($scope) {
+				$scope.name = "Anakin Skywalker";
+				$('.dark-side-button').click(function(e) {
+					$scope.name = "Darth Vader";
+					alert("don't use alerts for debugging");
+				});
+				};
+		</script>
+	</div>
+
+	<div id="events-angular-way" class="step slide playground" data-x="4500" data-y="3500" data-rotate-z="90">
 		<pre class="prettyprint">
+&lt;div ng-controller="MyController"&gt;
+	&lt;p&gt;My name is { {name} }&lt;/p&gt;
+	&lt;button ng-click="darkSide($event)"&gt;Come to the Dark Side!&lt;/button&gt;
+&lt;/div&gt;</pre>
+	<pre class="prettyprint">
 function MyController($scope) {
-	$scope.doSomething = function(e) {
-				//do something
+	$scope.name = "Anakin Skywalker";
+	$scope.darkSide = function(e) {
+		$scope.name = "Darth Vader";
+		alert("don't use alerts for debugging");
 	}
 }</pre>
 		<img class="angular" src="img/angular.png" />
-		<pre class="prettyprint">
-&lt;div ng-controller="MyController"&gt;
-	&lt;button ng-click="doSomething($event)"&gt;Click me!&lt;/button&gt;
-&lt;/div&gt;
-		</pre>
+		<div ng-controller="EventsPlayground">
+			<p>My name is {{name}}</p>
+			<button ng-click="darkSide($event)">Come to the Dark Side!</button>
+		</div>
+		<script>
+			function EventsPlayground($scope) {
+				$scope.name = "Anakin Skywalker";
+				$scope.darkSide = function(e) {
+					$scope.name = "Darth Vader";
+					alert("don't use alerts for debugging");
+					}
+				};
+		</script>
 	</div>
 
-	<div id="binding" class="step slide" data-x="5500" data-y="4500" data-rotate-z="90">
-		<h1>Two-way binding</h1>
+	<div id="events-can-of-worms" class="step slide" data-x="3500" data-y="3500" data-rotate-z="90">
+		<h1>Or you could use $scope.$apply()</h1>
+		<img src="img/can_of_worms.gif" alt="Can of Worms" />
+	</div>
+
+	<div id="binding" class="step slide playground" data-x="5500" data-y="4500" data-rotate-z="90">
+		<h1>Data binding (and DOM manipulation)</h1>
+		<pre class="prettyprint bad">		
+&lt;div ng-controller="MyController"&gt;
+	&lt;p class="greeting"&gt;&lt;/p&gt;
+	&lt;button ng-click="darkSide($event)"&gt;Come to the Dark Side!&lt;/button&gt;
+&lt;/div&gt;</pre>
 		<pre class="prettyprint bad">
 function MyController($scope, $httpBackend) {
 	var compiled, greeting;
+	$scope.name = "Yoda";
 	compiled = _.template("hello: <%= name %>");
-	greeting = compiled({name : 'moe'});
+	greeting = compiled({name : $scope.name });
 	$('.greeting').append(greeting);
+	$scope.darkSide = function(e) {
+		$scope.name = "Dark Yoda?";
+	}
 }</pre>
 		<img class="motorway" src="img/motorway.gif" />
-		<pre class="prettyprint">
-function MyController($scope, $httpBackend) {
-	$scope.greeting = $httpBackend.article.query({author="Tom"});
-}</pre>
+	<div ng-controller="BindingHighwayPlayground">
+		<p class="greeting"></p>
+		<button ng-click="darkSide($event)">Come to the Dark Side!</button>
+	</div>
+	<script>
+	function BindingHighwayPlayground($scope, $httpBackend) {
+		var compiled, greeting;
+		$scope.name = "Yoda";
+		compiled = _.template("hello: <%= name %>");
+		greeting = compiled({name : $scope.name });
+		$('.greeting').text(greeting);
+		$scope.darkSide = function(e) {
+			$scope.name = "Dark Yoda?";
+		}
+	}
+	</script>
+
+	</div>
+
+	<div id="binding-angular-way" class="step slide" data-x="4500" data-y="4500" data-rotate-z="90">
+		<h1>Two-way binding</h1>
 		<pre class="prettyprint">
 &lt;div ng-controller="MyController"&gt;
-	&lt;div class="greeting"&gt;hello: {{greeting}}!&lt;/div&gt;
+	&lt;p &gt;{ {name} }&lt;/p&gt;
+	&lt;input type="text" ng-model="name" /&gt;
 &lt;/div&gt;</pre>
+	<pre class="prettyprint">
+function MyController($scope, $httpBackend) {
+	$scope.name = "Yoda";
+}</pre>
 		<img class="angular" src="img/angular.png" />
+		<div ng-controller="BindingPlayground">
+			<p>hello: {{name}}</p>
+			<input type="text" ng-model="name" />
+		</div>
+		<script>
+		function BindingPlayground($scope, $httpBackend) {
+			$scope.name = "Yoda";
+		}
+		</script>
 	</div>
+	<div id="dark-yoda" class="step slide black" data-x="3500" data-y="4500" data-rotate-z="90">
+		<img src="img/dark-yoda.jpg" />
+	</div>
+
+<script>
+function Ctrl3($scope) {
+  $scope.title = 'Blah Blah Blah';
+  $scope.text = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+}
+
+angular.module('zippyModule', [])
+  .directive('zippy', function(){
+    return {
+      restrict: 'C',
+      // This HTML will replace the zippy directive.
+      replace: true,
+      transclude: true,
+      scope: { title:'@zippyTitle' },
+      template: '<div>' +
+                  '<div class="title">{{title}}</div>' +
+                  '<div class="body" ng-transclude></div>' +
+                '</div>',
+      // The linking function will add behavior to the template
+      link: function(scope, element, attrs) {
+            // Title element
+        var title = angular.element(element.children()[0]),
+            // Opened / closed state
+            opened = true;
+
+        // Clicking on title should open/close the zippy
+        title.bind('click', toggle);
+
+        // Toggle the closed/opened state
+        function toggle() {
+          opened = !opened;
+          element.removeClass(opened ? 'closed' : 'opened');
+          element.addClass(opened ? 'opened' : 'closed');
+        }
+
+        // initialize the zippy
+        toggle();
+      }
+    }
+  });
+</script>
+
 
 	<div id="directives" class="step slide" data-x="5500" data-y="5500" data-rotate-z="90">
 		<h1>Directives</h1>
-		<iframe width="100%" height="500" src="http://jsfiddle.net/PStTT/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+		<pre class="prettyprint">
+&lt;div&gt;
+	&lt;div ng-controller="Ctrl3"&gt;
+	&lt;div class="zippy" zippy-title="Details: { { title } }..."&gt;{ {text} }&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</pre>
+		<img class="angular" src="img/angular.png" />
+
+		<div>
+			<div ng-controller="Ctrl3">
+			Title: <input ng-model="title"> <br>
+			Text: <textarea ng-model="text"></textarea>
+			<hr>
+			<div class="zippy" zippy-title="Details: {{title}}...">{{text}}</div>
+			</div>
+		</div>
 	</div>
+
 
 	<div id="more" class="step slide" data-x="5500" data-y="6500" data-rotate-z="90">
 		<h1>And much more...</h1>
@@ -250,16 +406,30 @@ function MyController($scope, $httpBackend) {
 <footer>
 2013 Tom Najdek | Follow me:
 <a href="https://github.com/tnajdek"><span class="icon icon-github"></span></a>
-<a href="http://doppnet.com"><span class="icon icon-book"></span>
-<a href="https://plus.google.com/112496233047981712515/posts"><span class="icon icon-google-plus"></span>
-<a href="https://twitter.com/tnajdek"><span class="icon icon-twitter"></span>
+<a href="http://doppnet.com"><span class="icon icon-book"></span></a>
+<a href="https://plus.google.com/112496233047981712515/posts"><span class="icon icon-google-plus"></span></a>
+<a href="https://twitter.com/tnajdek"><span class="icon icon-twitter"></span></a>
 
 </footer>
 
 
 <script src="impress.js"></script>
 <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
-<script>impress().init();</script>
+
+
+<script>impress().init();
+// prevent impress hijacking space when in input fields
+$('input').on('keypress keydown keyup', function(e) {
+	e.stopPropagation();
+});
+
+angular.bootstrap($('#events'),[]);
+angular.bootstrap($('#events-angular-way'),[]);
+angular.bootstrap($('#binding'),[]);
+angular.bootstrap($('#binding-angular-way'),[]);
+angular.bootstrap($('#directives'),['zippyModule']);
+
+</script>
 
 </body>
 </html>
